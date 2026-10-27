@@ -18,7 +18,8 @@ A [FastAPI](https://fastapi.tiangolo.com/) extension serving a SCIM 2.0 server, 
 - `/Me`, once the application tells which resource the authenticated client stands for
 - Schema extensions, and several resource types sharing a schema
 - Conditional requests with ETags: `If-Match` and `If-None-Match`
-- SCIM error payloads for every failure, including the ones of the FastAPI dependencies
+- SCIM error payloads for the SCIM errors, and for the HTTP and validation errors of the FastAPI
+  dependencies
 - An `APIRouter` to include in any application or router, listed in the OpenAPI schema
 
 ## Example
