@@ -11,8 +11,10 @@ from fastapi import Depends
 from fastapi import FastAPI
 from fastapi import Request
 from fastapi import Response
+from fastapi.exceptions import RequestValidationError
 from fastapi.routing import APIRoute
 from scim2_models import Error
+from scim2_models import InvalidValueException
 from scim2_models import SCIMException
 from scim2_models import ScimProvider
 from scim2_server.handler import AsyncScimHandler
@@ -124,10 +126,11 @@ class ScimServer:
         ``resource_id``. A ``fallback`` route answers the other requests with
         a SCIM error.
 
-        The routes answer the :class:`~scim2_models.SCIMException` and the
-        :class:`~starlette.exceptions.HTTPException` raised by their
-        dependencies with a SCIM error, including the dependencies of the
-        routers that include this one.
+        The routes answer the :class:`~scim2_models.SCIMException`, the
+        :class:`~fastapi.HTTPException` and the validation errors raised by
+        their dependencies with a SCIM error, including the dependencies of the
+        routers that include this one. A validation error, such as a missing
+        header, gives a 400 ``invalidValue`` error.
         """
         router = APIRouter(prefix=self.url_prefix, route_class=self._route_class())
         for route in ROUTES:
@@ -163,6 +166,8 @@ class ScimServer:
                         return scim_server._handle_scim_exception(exception)
                     except HTTPException as exception:
                         return scim_server._handle_http_exception(exception)
+                    except RequestValidationError as exception:
+                        return scim_server._handle_validation_error(exception)
 
                 return handle
 
@@ -231,3 +236,11 @@ class ScimServer:
             if key.lower() != "content-type":
                 response.headers[key] = value
         return response
+
+    def _handle_validation_error(self, exception: RequestValidationError) -> Response:
+        """Turn the validation error of a dependency, such as a missing header, into a SCIM error."""
+        detail = "; ".join(
+            f"{'.'.join(map(str, error['loc']))}: {error['msg']}"
+            for error in exception.errors()
+        )
+        return self._handle_scim_exception(InvalidValueException(detail=detail))

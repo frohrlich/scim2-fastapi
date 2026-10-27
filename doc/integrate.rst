@@ -76,10 +76,11 @@ announced schemes:
    >>> client.get("/scim/v2/ServiceProviderConfig").status_code
    200
 
-The extension answers with a SCIM error the :class:`~scim2_models.SCIMException` and the
-``HTTPException`` of FastAPI raised by any dependency of its routes: the ``subject`` dependency,
-and the dependencies of the routers that include its router. An ``HTTPException`` keeps its
-headers, such as :mdn:`WWW-Authenticate`.
+The extension answers with a SCIM error the :class:`~scim2_models.SCIMException`, the
+:class:`~fastapi.HTTPException` and the validation errors raised by any dependency of its routes:
+the ``subject`` dependency, and the dependencies of the routers that include its router. An
+:class:`~fastapi.HTTPException` keeps its headers, such as :mdn:`WWW-Authenticate`. A validation
+error, such as a missing header, gives a 400 ``invalidValue`` error.
 
 The service reads the subject in two methods: :meth:`~scim2_server.service.ScimService.authorize`
 accepts or refuses each operation, and :meth:`~scim2_server.service.ScimService.me_target` finds

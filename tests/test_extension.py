@@ -1,7 +1,10 @@
+from typing import Annotated
+
 import pytest
 from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import FastAPI
+from fastapi import Header
 from fastapi import HTTPException
 from fastapi import Request
 from fastapi.testclient import TestClient
@@ -292,6 +295,22 @@ def test_http_exception_raised_by_a_dependency_keeps_its_headers():
     assert response.headers["WWW-Authenticate"] == "Bearer"
     assert response.headers["Content-Type"] == SCIM_JSON
     assert response.json()["detail"] == "Missing or invalid token"
+
+
+def test_validation_error_raised_by_a_dependency_answers_a_scim_400():
+    def header_subject(x_user: Annotated[str, Header()]) -> str:
+        return x_user
+
+    client = create_client(subject=header_subject)
+
+    response = client.get("/scim/v2/Users")
+    assert response.status_code == 400
+    assert response.headers["Content-Type"] == SCIM_JSON
+    assert response.json()["scimType"] == "invalidValue"
+    assert response.json()["detail"] == "header.x-user: Field required"
+    assert (
+        client.get("/scim/v2/Users", headers={"X-User": "bjensen"}).status_code == 200
+    )
 
 
 def test_subject_is_passed_to_the_service():
