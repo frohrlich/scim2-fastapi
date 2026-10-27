@@ -3,8 +3,8 @@ scim2-fastapi
 
 scim2-fastapi is a `FastAPI <https://fastapi.tiangolo.com/>`_ extension serving a SCIM 2.0
 server, as :rfc:`RFC 7643 <7643>` and :rfc:`RFC 7644 <7644>` define it. It exposes the
-resource, search, bulk and discovery endpoints in an ``APIRouter``. It is built upon
-:doc:`scim2-server <scim2_server:index>` and :doc:`scim2-models <scim2_models:index>`.
+resource, search, bulk and discovery endpoints in an :class:`~fastapi.APIRouter`. It is built
+upon :doc:`scim2-server <scim2_server:index>` and :doc:`scim2-models <scim2_models:index>`.
 
 The extension serves the SCIM protocol. The FastAPI application that includes it provides the
 rest:

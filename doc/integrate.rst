@@ -39,9 +39,9 @@ extension passes to this service:
    :language: python
    :pyobject: authenticate
 
-``HTTPBearer`` reads the token of the :mdn:`Authorization` header, and announces the scheme in the
-OpenAPI schema. Replace ``TOKENS`` with the validation of the tokens of your application,
-preferably with a library dedicated to authentication, such as
+:class:`~fastapi.security.HTTPBearer` reads the token of the :mdn:`Authorization` header, and
+announces the scheme in the OpenAPI schema. Replace ``TOKENS`` with the validation of the tokens
+of your application, preferably with a library dedicated to authentication, such as
 `Authlib <https://docs.authlib.org>`_.
 
 Announce the scheme in the ``authentication_schemes`` of the
@@ -166,7 +166,8 @@ path, pass it as ``url_prefix``:
    200
 
 Without ``app``, :meth:`~scim2_fastapi.ScimServer.create_router` returns the router, to include in
-the application or in another router, with the parameters of ``include_router``:
+the application or in another router, with the parameters of
+:func:`~fastapi.APIRouter.include_router`:
 
 .. doctest::
 

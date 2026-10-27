@@ -30,6 +30,7 @@ todo_include_todos = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
+    "fastapi": ("https://fastapi.tiangolo.com/", None),
     "scim2_models": ("https://scim2-models.readthedocs.io/en/latest/", None),
     "scim2_client": ("https://scim2-client.readthedocs.io/en/latest/", None),
     "scim2_tester": ("https://scim2-tester.readthedocs.io/en/latest/", None),

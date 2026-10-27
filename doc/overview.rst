@@ -2,9 +2,9 @@ Overview
 ========
 
 scim2-fastapi serves the **System for Cross-domain Identity Management** (**SCIM**) protocol from
-a FastAPI application. It exposes the endpoints of :rfc:`RFC 7644 <7644>` in an ``APIRouter``, and
-leaves the protocol to :doc:`scim2-server <scim2_server:index>` and the payloads to
-:doc:`scim2-models <scim2_models:index>`.
+a FastAPI application. It exposes the endpoints of :rfc:`RFC 7644 <7644>` in an
+:class:`~fastapi.APIRouter`, and leaves the protocol to :doc:`scim2-server <scim2_server:index>`
+and the payloads to :doc:`scim2-models <scim2_models:index>`.
 
 It does not keep the resources, nor authenticate the clients: a storage and the FastAPI
 application that includes the extension do.
